@@ -16,6 +16,8 @@ export default function LocalGame() {
         correctKeyStrokes: -1,
         wrongKeystrokes: -1,
         accuracy: -1,
+        correctWords: -1,
+        wrongWords: -1
     })
     const { data, isLoading, isError } = useQuery({
         queryKey: ["fetchTypingData"],
@@ -38,7 +40,7 @@ export default function LocalGame() {
     }
 
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle = {styles.mainContent}>
             <View style = {styles.inputContainer}>
                 <Input
                     contextMenuHidden = {true}
@@ -50,6 +52,7 @@ export default function LocalGame() {
                     autoComplete = "off"
                     spellCheck = {false}
                     autoCapitalize = "none"
+                    rootStyle = {{ flex: 1 }}
                 />
                 <View style = {styles.timeContainer}>
                     <Text style = {styles.timeText}>{timer}</Text>
@@ -63,18 +66,25 @@ export default function LocalGame() {
 }
 
 const styles = ScaledSheet.create({
+    mainContent: {
+        paddingHorizontal: "16@s"
+    },
     inputContainer: {
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
     },
     timeContainer: {
         borderRadius: 4,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: "gray",
-        marginLeft: "10@ms0.4"
+        marginLeft: "10@ms0.4",
+        width: 40,
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center"
     },
     timeText: {
-        fontSize: "12@s0.2",
+        fontSize: "12@s",
         color: "black"
     }
 })
