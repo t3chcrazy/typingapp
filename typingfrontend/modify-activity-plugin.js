@@ -1,12 +1,14 @@
 const { AndroidConfig, withAndroidManifest } = require("expo/config-plugins")
 
-const { getMainActivityOrThrow } = AndroidConfig.Manifest
+const { getMainActivityOrThrow, getMainApplicationOrThrow } = AndroidConfig.Manifest
 
 async function modifyActivityConfig(
     config,
     androidManifest
 ) {
     const mainActivity = getMainActivityOrThrow(androidManifest)
+    const mainApplication = getMainApplicationOrThrow(androidManifest)
+    mainApplication.$["android:usesCleartextTraffic"] = "true"
     mainActivity.$['android:windowSoftInputMode'] = "adjustResize"
     return androidManifest
 }

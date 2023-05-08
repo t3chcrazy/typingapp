@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 
-export default function useTimer(limit, interval = 1000) {
+export default function useTimer(limit, interval = 1000, finishCallback) {
     const [timer, setTimer] = useState(limit)
     const [isRunning, setRunning] = useState(false)
     const intervalRef = useRef()
@@ -14,6 +14,7 @@ export default function useTimer(limit, interval = 1000) {
         intervalRef.current = setInterval(() => {
             setTimer(prev => {
                 if (prev === 1) {
+                    finishCallback?.()
                     stopTimer()
                 }
                 return prev-1

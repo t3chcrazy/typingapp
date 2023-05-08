@@ -46,7 +46,9 @@ const linking = {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 5
+      onError: (error) => {
+        console.log({ error })
+      }
     }
   }
 })

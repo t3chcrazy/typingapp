@@ -10,6 +10,14 @@ import NavButton from "./components/NavButton";
 import Layout from "../../renderprops/Layout";
 import StatComp from "./components/StatComp";
 import AccuracyBox from "./components/AccuracyBox";
+import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+
+const data = [
+    { quarter: 1, earnings: 13000 },
+    { quarter: 2, earnings: 16500 },
+    { quarter: 3, earnings: 14250 },
+    { quarter: 4, earnings: 19000 }
+];
 
 export default function GamePage({ navigation }) {
 
@@ -102,7 +110,9 @@ export default function GamePage({ navigation }) {
                                                 colors = {["#0083B0", "#fdcb6e"]}
                                                 end = {{ x: 1, y: 1 }}
                                             >
-                                                <Text>Hello</Text>
+                                                <VictoryChart width={350} theme={VictoryTheme.material}>
+                                                    <VictoryBar data={data} x="quarter" y="earnings" />
+                                                </VictoryChart>
                                             </StatBox>
                                             <StatBox
                                                 colors = {["#0083B0", "#fdcb6e"]}
