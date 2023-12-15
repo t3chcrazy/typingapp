@@ -1,32 +1,55 @@
 import { useEffect, useState } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import routes from './routes'
-import { auth } from '../../firebase-init'
 import MainPlaceholder from '../loaders/MainPlaceholder'
 import LocalGame from '../screens/LocalGame'
 import Landing from '../screens/Landing'
 import MainPage from '../screens/MainPage'
-import { setToken } from '../util/auth'
 import OnlineGame from '../screens/OnlineGame'
+import { supabase } from '../lib/supabase'
 
 const Stack = createNativeStackNavigator()
 
 export default function AppRoutes() {
     const [isLoggingIn, setIsLoggingIn] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [currentSession, setCurrentSession] = useState()
 
     useEffect(() => {
-        const handleLoad = async user => {
-            if (!user) {
+        const initialSetup = async () => {
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession()
+                setCurrentSession(session)
+                if (!error) {
+                    setIsLoggingIn(!!session?.user)
+                }
+            }
+            catch (err) {
                 setIsLoggingIn(false)
             }
-            else {
-                await setToken(await user.getIdToken())
-                setIsLoggingIn(true)
+            finally {
+                setLoading(false)
             }
-            setLoading(false)
         }
-        auth.onAuthStateChanged(handleLoad)
+        initialSetup()
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            console.log("On change", session, event)
+            setCurrentSession(session)
+            setIsLoggingIn(!!session?.user)
+        })
+        return subscription.unsubscribe
+        // const handleLoad = async user => {
+        //     if (!user) {
+        //         setIsLoggingIn(false)
+        //     }
+        //     else {
+        //         await setToken(await user.getIdToken())
+        //         setIsLoggingIn(true)
+        //     }
+        //     setLoading(false)
+        // }
+        // const unsubscribe = auth.onAuthStateChanged(handleLoad)
+        // return unsubscribe
     }, [])
 
     if (loading) {

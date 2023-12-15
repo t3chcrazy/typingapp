@@ -44,7 +44,8 @@ const styles = ScaledSheet.create({
         borderRadius: 12,
         padding: PADDING_VERTICAL/2,
         height: 2*TEXT_HEIGHT+PADDING_VERTICAL, overflow: "hidden",
-        marginVertical: "12@vs"
+        marginVertical: "12@vs",
+        pointerEvents: "none"
     },
     mainContent: {
         paddingHorizontal: "16@s",

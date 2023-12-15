@@ -4,7 +4,6 @@ import { useSharedValue, withTiming } from "react-native-reanimated";
 import { useMutation } from "@tanstack/react-query";
 import { Platform } from "react-native";
 import useTimer from "../../../hooks/useTimer";
-import { saveRunToDB } from "../../../lib/firestore";
 import { useGenerateWords } from "./generateWords";
 
 const INITIAL_STATE = {
@@ -22,7 +21,7 @@ export function useRunData() {
     const localGameData = useRef(INITIAL_STATE)
     const { mutate, isLoading } = useMutation({
         mutationKey: ["post-run"],
-        mutationFn: data => saveRunToDB(data) ,
+        // mutationFn: data => saveRunToDB(data) ,
         onSuccess: () => {
             progress.value = withTiming(1)
             showMessage({

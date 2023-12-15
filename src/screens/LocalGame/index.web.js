@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query';
 import useTimer from '../../hooks/useTimer';
 import { PADDING_VERTICAL, styles } from './helpers/styles';
 import { useGenerateWords } from './helpers/generateWords';
-import { saveRunToDB } from '../../lib/firestore';
 import { showMessage } from 'react-native-flash-message';
 
 const INITIAL_STATE = {
@@ -32,7 +31,7 @@ export default function LocalGame() {
     const { texts, generateWords } = useGenerateWords()
     const { mutate, isLoading: isRecordSaving } = useMutation({
         mutationKey: ["createRecord"],
-        mutationFn: body => saveRunToDB(body),
+        // mutationFn: body => saveRunToDB(body),
         onSuccess: () => {
             progress.value = withTiming(1)
         },
@@ -117,7 +116,7 @@ export default function LocalGame() {
         <ScrollView contentContainerStyle = {styles.mainContent}>
             <Animated.View style = {[styles.mainContainer, inputStyle]}>
                 <Text style = {styles.textHeader}>Try to type as many words as you can within the time limit!</Text>
-                <ScrollView pointerEvents = "none" scrollEnabled = {false} showsVerticalScrollIndicator = {false} ref = {scrollContainer} style = {styles.scrollViewStyle}>
+                <ScrollView scrollEnabled = {false} showsVerticalScrollIndicator = {false} ref = {scrollContainer} style = {styles.scrollViewStyle}>
                     <View ref = {viewRef} style = {{ flexDirection: "row", flexWrap: "wrap" }}>
                         {texts.map((t, ind) => <Text ref= {ref => t.ref = ref} key = {`${t.value}-${ind}`} style = {{ ...styles.individualWord, backgroundColor: currentWordIndex === ind? "gray": "transparent" }}>{t.value}</Text>)}
                     </View>

@@ -1,5 +1,4 @@
 import { GestureHandlerRootView, enableExperimentalWebImplementation } from 'react-native-gesture-handler';
-import './firebase-init'
 import { Platform, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { QueryClient, QueryClientProvider, onlineManager } from '@tanstack/react-query';

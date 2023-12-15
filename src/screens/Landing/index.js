@@ -1,20 +1,18 @@
 import { useState, useReducer } from 'react'
-import { View, ScrollView, Dimensions } from 'react-native'
+import { View, ScrollView, Dimensions, StyleSheet } from 'react-native'
 import { ScaledSheet } from 'react-native-size-matters'
-import { auth } from '../../../firebase-init'
 import Input from '../../components/Input'
 import Header from './components/Header'
 import Text from '../../components/Text'
 import Button from '../../components/Button'
 import { ACTIONS } from './forms/actions'
 import reducer, { INITIAL_STATE } from './forms/reducer'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import Toggle from '../../renderprops/Toggle'
 import { showMessage } from 'react-native-flash-message'
 import { isFormValid } from './forms/validator'
-import { mapCodeToMessage } from './forms/codes'
+import { supabase } from '../../lib/supabase'
 
 const { width } = Dimensions.get("window")
 
@@ -37,10 +35,27 @@ export default function Landing() {
             if (isFormValid(state, isLoggingIn)) {
                 setSubmitting(true)
                 if (isLoggingIn) {
-                    await signInWithEmailAndPassword(auth, state.email.value, state.password.value)
+                    const data = await supabase.auth.signInWithPassword({
+                        email: state.email.value,
+                        password: state.password.value,
+                    })
+                    if (data.error) {
+                        throw data.error.message
+                    }
                 }
                 else {
-                    await createUserWithEmailAndPassword(auth, state.email.value, state.password.value)
+                    const data = await supabase.auth.signUp({
+                        email: state.email.value,
+                        password: state.password.value,
+                        options: {
+                            data: {
+                                userName: state.alias.value,
+                            },
+                        }
+                    })
+                    if (data.error) {
+                        throw data.error?.message
+                    }
                 }
             }
             else {
@@ -48,9 +63,8 @@ export default function Landing() {
             }
         }
         catch (err) {
-            console.log(err.code)
             showMessage({
-                message: mapCodeToMessage(err.code),
+                message: err ?? "Something went wrong. Please try again",
                 type: "danger"
             })
         }
@@ -60,7 +74,7 @@ export default function Landing() {
     }
 
     return (
-        <ScrollView style = {{ backgroundColor: '#f6e58d' }} contentContainerStyle = {styles.root} keyboardShouldPersistTaps = "always">
+        <ScrollView style = {styles.scrollContent} contentContainerStyle = {styles.root} keyboardShouldPersistTaps = "always">
             <Header />
             <View style = {styles.formContainer}>
                 <View style = {styles.formHeader}>
@@ -86,7 +100,7 @@ export default function Landing() {
                 <Input
                     leftComponent = {<MaterialIcons style = {styles.formIcon} name="mail" />}
                     placeholder = "Email Address"
-                    keyboardType = "email-address"
+                    inputMode = "email"
                     value = {state["email"].value}
                     onChangeText = {handleFieldEdit("email")}
                     rootStyle = {styles.nonLastField}
@@ -116,6 +130,7 @@ export default function Landing() {
 }
 
 const styles = ScaledSheet.create({
+    scrollContent: { backgroundColor: '#f6e58d' },
     root: {
         flexGrow: 1,
         justifyContent: "center"

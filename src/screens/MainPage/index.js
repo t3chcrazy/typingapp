@@ -3,7 +3,6 @@ import Text from "../../components/Text";
 import { LinearGradient } from 'expo-linear-gradient'
 import { ScaledSheet } from "react-native-size-matters";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { auth } from "../../../firebase-init";
 import routes from "../../routes/routes";
 import StatBox from "./components/StatBox";
 import NavButton from "./components/NavButton";
@@ -11,6 +10,7 @@ import Layout from "../../renderprops/Layout";
 import StatComp from "./components/StatComp";
 import AccuracyBox from "./components/AccuracyBox";
 import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import { supabase } from "../../lib/supabase";
 
 const data = [
     { quarter: 1, earnings: 13000 },
@@ -22,7 +22,7 @@ const data = [
 export default function GamePage({ navigation }) {
 
     const handleSignout = async () => {
-        await auth.signOut()
+        await supabase.auth.signOut()
     }
 
     const navTo = route => () => {
