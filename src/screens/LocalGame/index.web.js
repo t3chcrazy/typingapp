@@ -1,14 +1,15 @@
-import { createRef, useRef, useState } from 'react'
-import { Pressable, ScrollView, View, Platform, ActivityIndicator, Text } from "react-native";
+import { useRef, useState } from 'react'
+import { Pressable, ScrollView, View, Platform, Text } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate } from 'react-native-reanimated';
 import Input from "../../components/Input";
 import Button from '../../components/Button';
-import endpoints from '../../api/endpoints';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import fetcher from '../../api/fetcher';
+import { useMutation } from '@tanstack/react-query';
 import useTimer from '../../hooks/useTimer';
 import { PADDING_VERTICAL, styles } from './helpers/styles';
+import { useGenerateWords } from './helpers/generateWords';
+import { saveRunToDB } from '../../lib/firestore';
+import { showMessage } from 'react-native-flash-message';
 
 const INITIAL_STATE = {
     wpm: 0,
@@ -24,28 +25,24 @@ export default function LocalGame() {
     const progress = useSharedValue(0)
     const inputRef = useRef()
     const localGameData = useRef(INITIAL_STATE)
-    const [texts, setTexts] = useState([])
     const prevWord = useRef("")
     const [currentWordIndex, setCurrentWordIndex] = useState(0)
     const scrollContainer = useRef()
     const viewRef = useRef()
-    const { isFetching, isError, refetch } = useQuery({
-        queryKey: ["fetchTypingData"],
-        queryFn: ({ signal }) => fetcher(endpoints.GENERATE_WORDS, { signal }),
-        cacheTime: 0,
-        onSuccess: ({ message }) => {
-            setTexts(message.map((mess, ind) => ({
-                ref: createRef(),
-                value: mess,
-            })))
-        },
-        refetchOnWindowFocus: false,
-    })
+    const { texts, generateWords } = useGenerateWords()
     const { mutate, isLoading: isRecordSaving } = useMutation({
         mutationKey: ["createRecord"],
-        mutationFn: body => fetcher(endpoints.SAVE_RUN, { method: "POST", body: JSON.stringify(body) }),
+        mutationFn: body => saveRunToDB(body),
         onSuccess: () => {
-            progress.value = withSpring(1)
+            progress.value = withTiming(1)
+        },
+        onError: () => {
+            stopTimer()
+            resetGameState()
+            showMessage({
+                message: "Something went wrong. Please try again",
+                type: "danger"
+            })
         }
     })
     const { timer, startTimer, isRunning, stopTimer } = useTimer(60, 1000, () => {
@@ -57,13 +54,13 @@ export default function LocalGame() {
             startTimer()
         }
         if (text?.includes(" ")) {
-            inputRef.current?.setNativeProps({ text: "" })
+            inputRef.current.value = ""
             prevWord.current = ""
             const isCorrect = text?.replace(" ", "") === texts[currentWordIndex].value
             texts[currentWordIndex].ref.measureLayout(viewRef.current, (left, top, width, height) => {
                 scrollContainer.current.scrollTo({ y: top+(!!top? PADDING_VERTICAL/2: 0) })
             })
-            texts[currentWordIndex].ref.setNativeProps({ style: { color: isCorrect? "green": "red" } })
+            texts[currentWordIndex].ref.style.color = isCorrect? 'green': 'red'
             if (isCorrect) {
                 localGameData.current.correctWords += 1
             }
@@ -96,13 +93,13 @@ export default function LocalGame() {
 
     const handleRetryGame = () => {
         stopTimer()
-        refetch()
+        generateWords()
         resetGameState()
     }
 
     const handleRestartGame = () => {
         progress.value = withSpring(0)
-        refetch()
+        generateWords()
         resetGameState()
     }
 
@@ -121,18 +118,12 @@ export default function LocalGame() {
             <Animated.View style = {[styles.mainContainer, inputStyle]}>
                 <Text style = {styles.textHeader}>Try to type as many words as you can within the time limit!</Text>
                 <ScrollView pointerEvents = "none" scrollEnabled = {false} showsVerticalScrollIndicator = {false} ref = {scrollContainer} style = {styles.scrollViewStyle}>
-                    {isFetching? 
-                    <ActivityIndicator size = "large" color = "green" />: 
-                    isError? 
-                    <Text>Some error occurred. Please try again</Text>:
                     <View ref = {viewRef} style = {{ flexDirection: "row", flexWrap: "wrap" }}>
                         {texts.map((t, ind) => <Text ref= {ref => t.ref = ref} key = {`${t.value}-${ind}`} style = {{ ...styles.individualWord, backgroundColor: currentWordIndex === ind? "gray": "transparent" }}>{t.value}</Text>)}
                     </View>
-                    }
                 </ScrollView>
                 <View style = {styles.inputContainer}>
                     <Input
-                        editable = {!isFetching}
                         contextMenuHidden = {true}
                         selectTextOnFocus = {false}
                         placeholder = "Start Typing!"
@@ -147,7 +138,7 @@ export default function LocalGame() {
                     <View style = {styles.timeContainer}>
                         <Text style = {styles.timeText}>{timer}</Text>
                     </View>
-                    <Pressable onPress = {handleRetryGame} style = {styles.retryButton} disabled = {isFetching}>
+                    <Pressable onPress = {handleRetryGame} style = {styles.retryButton}>
                         <FontAwesome name="refresh" size={24} color="black" />
                     </Pressable>
                 </View>

@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
 import { getReactNativePersistence, initializeAuth } from 'firebase/auth/react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getDatabase } from 'firebase/database'
+import { getFirestore } from 'firebase/firestore'
 import { Platform } from "react-native";
 import { API_KEY, AUTH_DOMAIN, DB_URL, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, MEASUREMENT_ID } from 'react-native-dotenv'
 
@@ -25,6 +25,6 @@ if (Platform.OS !== "web") {
   })
 }
 const auth = getAuth(app)
-const db = getDatabase()
+const db = getFirestore(app)
 
 export { app, auth, db }
