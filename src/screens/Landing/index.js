@@ -1,5 +1,5 @@
 import { useState, useReducer } from 'react'
-import { View, ScrollView, Dimensions, StyleSheet } from 'react-native'
+import { View, ScrollView, Dimensions } from 'react-native'
 import { ScaledSheet } from 'react-native-size-matters'
 import Input from '../../components/Input'
 import Header from './components/Header'

@@ -13,13 +13,11 @@ const Stack = createNativeStackNavigator()
 export default function AppRoutes() {
     const [isLoggingIn, setIsLoggingIn] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [currentSession, setCurrentSession] = useState()
 
     useEffect(() => {
         const initialSetup = async () => {
             try {
                 const { data: { session }, error } = await supabase.auth.getSession()
-                setCurrentSession(session)
                 if (!error) {
                     setIsLoggingIn(!!session?.user)
                 }
@@ -33,23 +31,9 @@ export default function AppRoutes() {
         }
         initialSetup()
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            console.log("On change", session, event)
-            setCurrentSession(session)
             setIsLoggingIn(!!session?.user)
         })
         return subscription.unsubscribe
-        // const handleLoad = async user => {
-        //     if (!user) {
-        //         setIsLoggingIn(false)
-        //     }
-        //     else {
-        //         await setToken(await user.getIdToken())
-        //         setIsLoggingIn(true)
-        //     }
-        //     setLoading(false)
-        // }
-        // const unsubscribe = auth.onAuthStateChanged(handleLoad)
-        // return unsubscribe
     }, [])
 
     if (loading) {

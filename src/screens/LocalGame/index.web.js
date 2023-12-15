@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Pressable, ScrollView, View, Platform, Text } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolate, withTiming } from 'react-native-reanimated';
 import Input from "../../components/Input";
 import Button from '../../components/Button';
 import { useMutation } from '@tanstack/react-query';
@@ -9,14 +9,15 @@ import useTimer from '../../hooks/useTimer';
 import { PADDING_VERTICAL, styles } from './helpers/styles';
 import { useGenerateWords } from './helpers/generateWords';
 import { showMessage } from 'react-native-flash-message';
+import { saveRunToDB } from '../../lib/db';
 
 const INITIAL_STATE = {
     wpm: 0,
-    correctKeyStrokes: 0,
-    wrongKeystrokes: 0,
+    // correctKeyStrokes: 0,
+    // wrongKeystrokes: 0,
     accuracy: 0,
-    correctWords: 0,
-    wrongWords: 0,
+    correct_words: 0,
+    wrong_words: 0,
     platform: Platform.OS
 }
 
@@ -31,7 +32,7 @@ export default function LocalGame() {
     const { texts, generateWords } = useGenerateWords()
     const { mutate, isLoading: isRecordSaving } = useMutation({
         mutationKey: ["createRecord"],
-        // mutationFn: body => saveRunToDB(body),
+        mutationFn: body => saveRunToDB(body),
         onSuccess: () => {
             progress.value = withTiming(1)
         },
@@ -44,8 +45,13 @@ export default function LocalGame() {
             })
         }
     })
-    const { timer, startTimer, isRunning, stopTimer } = useTimer(60, 1000, () => {
-        mutate(localGameData.current)
+    const { timer, startTimer, isRunning, stopTimer } = useTimer(30, 1000, () => {
+        mutate({
+            ...localGameData.current,
+            accuracy: (localGameData.current.correct_words/(localGameData.current.correct_words+localGameData.current.wrong_words)*100).toFixed(2),
+            wpm: (localGameData.current.correct_words+localGameData.current.wrong_words),
+            created_date: new Date()
+        })
     })
 
     const handleChange = text => {
@@ -61,22 +67,22 @@ export default function LocalGame() {
             })
             texts[currentWordIndex].ref.style.color = isCorrect? 'green': 'red'
             if (isCorrect) {
-                localGameData.current.correctWords += 1
+                localGameData.current.correct_words += 1
             }
             else {
-                localGameData.current.wrongWords += 1
+                localGameData.current.wrong_words += 1
             }
             setCurrentWordIndex(prev => prev+1)
         }
         else {
-            if (text?.length > prevWord.current.length) {
-                if (texts[currentWordIndex].value.startsWith(text?.replace(" ", ""))) {
-                    localGameData.current.correctKeyStrokes += 1
-                }
-                else {
-                    localGameData.current.wrongKeystrokes += 1
-                }
-            }
+            // if (text?.length > prevWord.current.length) {
+            //     if (texts[currentWordIndex].value.startsWith(text?.replace(" ", ""))) {
+            //         localGameData.current.correctKeyStrokes += 1
+            //     }
+            //     else {
+            //         localGameData.current.wrongKeystrokes += 1
+            //     }
+            // }
             prevWord.current = text
         }
     }
@@ -144,9 +150,9 @@ export default function LocalGame() {
             </Animated.View>
             <Animated.View style = {[styles.mainContainer, infoContainer]}>
                 <Text>Here are the results</Text>
-                <Text>WPM: {localGameData.current.correctWords+localGameData.current.wrongWords}</Text>
-                <Text>Correct Words: {localGameData.current.correctWords}</Text>
-                <Text>Wrong Words: {localGameData.current.wrongWords}</Text>
+                <Text>WPM: {localGameData.current.correct_words+localGameData.current.wrong_words}</Text>
+                <Text>Correct Words: {localGameData.current.correct_words}</Text>
+                <Text>Wrong Words: {localGameData.current.wrong_words}</Text>
                 <Text>Correct Keystrokes: {localGameData.current.correctKeyStrokes}</Text>
                 <Text>Wrong Keystrokes: {localGameData.current.wrongKeystrokes}</Text>
                 <Button onPress = {handleRestartGame}>
