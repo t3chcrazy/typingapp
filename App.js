@@ -34,7 +34,7 @@ onlineManager.setEventListener(setOnline => {
 const linking = {
   config: {
       screens: {
-          [routes.LANDING]: "/validate",
+          [routes.LANDING]: "/login",
           [routes.MAIN]: "/main",
           [routes.LOCAL_GAME]: "/local-game",
           [routes.ONLINE_GAME]: "/online-game"

@@ -1,7 +1,7 @@
 import { Dimensions, Platform, StyleSheet } from 'react-native'
 import { ScaledSheet } from 'react-native-size-matters'
 
-const width = Dimensions.get("screen").width
+const width = Dimensions.get("window").width
 
 const TEXT_HEIGHT = Platform.select({
     native: 24,

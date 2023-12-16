@@ -13,8 +13,8 @@ import { saveRunToDB } from '../../lib/db';
 
 const INITIAL_STATE = {
     wpm: 0,
-    // correctKeyStrokes: 0,
-    // wrongKeystrokes: 0,
+    correct_keysrokes: 0,
+    wrong_keystrokes: 0,
     accuracy: 0,
     correct_words: 0,
     wrong_words: 0,
@@ -45,7 +45,7 @@ export default function LocalGame() {
             })
         }
     })
-    const { timer, startTimer, isRunning, stopTimer } = useTimer(30, 1000, () => {
+    const { timer, startTimer, isRunning, stopTimer } = useTimer(60, 1000, () => {
         mutate({
             ...localGameData.current,
             accuracy: (localGameData.current.correct_words/(localGameData.current.correct_words+localGameData.current.wrong_words)*100).toFixed(2),
@@ -60,7 +60,7 @@ export default function LocalGame() {
         }
         if (text?.includes(" ")) {
             inputRef.current.value = ""
-            prevWord.current = ""
+            prevWord.current = texts[currentWordIndex].value
             const isCorrect = text?.replace(" ", "") === texts[currentWordIndex].value
             texts[currentWordIndex].ref.measureLayout(viewRef.current, (left, top, width, height) => {
                 scrollContainer.current.scrollTo({ y: top+(!!top? PADDING_VERTICAL/2: 0) })
@@ -75,15 +75,12 @@ export default function LocalGame() {
             setCurrentWordIndex(prev => prev+1)
         }
         else {
-            // if (text?.length > prevWord.current.length) {
-            //     if (texts[currentWordIndex].value.startsWith(text?.replace(" ", ""))) {
-            //         localGameData.current.correctKeyStrokes += 1
-            //     }
-            //     else {
-            //         localGameData.current.wrongKeystrokes += 1
-            //     }
-            // }
-            prevWord.current = text
+            if (prevWord.current.startsWith(text)) {
+                localGameData.current.correct_keysrokes += 1
+            }
+            else {
+                localGameData.current.wrong_keystrokes += 1
+            }
         }
     }
 
@@ -153,8 +150,8 @@ export default function LocalGame() {
                 <Text>WPM: {localGameData.current.correct_words+localGameData.current.wrong_words}</Text>
                 <Text>Correct Words: {localGameData.current.correct_words}</Text>
                 <Text>Wrong Words: {localGameData.current.wrong_words}</Text>
-                <Text>Correct Keystrokes: {localGameData.current.correctKeyStrokes}</Text>
-                <Text>Wrong Keystrokes: {localGameData.current.wrongKeystrokes}</Text>
+                <Text>Correct Keystrokes: {localGameData.current.correct_keysrokes}</Text>
+                <Text>Wrong Keystrokes: {localGameData.current.wrong_keystrokes}</Text>
                 <Button onPress = {handleRestartGame}>
                     <Text>Restart</Text>
                 </Button>

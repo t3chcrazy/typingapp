@@ -48,14 +48,8 @@ export default function GamePage({ navigation }) {
                                         <NavButton
                                             showColumnLayout = {showColumnLayout}
                                             onPress = {navTo(routes.LOCAL_GAME)}
-                                            text = "Local"
+                                            text = "Play!"
                                             icon = {<MaterialCommunityIcons name="gamepad-square" size={24} color="white" />}
-                                        />
-                                        <NavButton
-                                            showColumnLayout = {showColumnLayout}
-                                            onPress = {navTo(routes.ONLINE_GAME)}
-                                            text = "Online"
-                                            icon = {<MaterialCommunityIcons name="account-multiple" size={24} color="white" />}
                                         />
                                         <NavButton
                                             showColumnLayout = {showColumnLayout}

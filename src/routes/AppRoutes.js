@@ -5,7 +5,6 @@ import MainPlaceholder from '../loaders/MainPlaceholder'
 import LocalGame from '../screens/LocalGame'
 import Landing from '../screens/Landing'
 import MainPage from '../screens/MainPage'
-import OnlineGame from '../screens/OnlineGame'
 import { supabase } from '../lib/supabase'
 
 const Stack = createNativeStackNavigator()
@@ -46,7 +45,6 @@ export default function AppRoutes() {
             <>
                 <Stack.Screen name = {routes.MAIN} getComponent = {() => MainPage} />
                 <Stack.Screen name = {routes.LOCAL_GAME} getComponent = {() => LocalGame} />
-                <Stack.Screen name = {routes.ONLINE_GAME} getComponent = {() => OnlineGame} />
             </>:
             <>
                 <Stack.Screen name = {routes.LANDING} getComponent = {() => Landing} />

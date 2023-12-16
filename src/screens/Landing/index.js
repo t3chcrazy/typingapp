@@ -151,7 +151,7 @@ const styles = ScaledSheet.create({
     },
     formHeader: {
         marginTop: "5@vs",
-        marginBottom: "30@vs",
+        marginBottom: "20@vs",
         alignItems: "center",
         alignSelf: "center"
     },
