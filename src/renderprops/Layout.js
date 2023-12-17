@@ -7,11 +7,11 @@ const LayoutContext = createContext({ width: initialWidth, showColumnLayout: ini
 
 export default function Layout(props) {
     const { width } = useWindowDimensions()
-    const showColumnLayout = width <= 768
+    const isMobile = width < 768
 
     return (
-        <LayoutContext.Provider value = {{ width, showColumnLayout }}>
-            {typeof props.children === "function"? props.children({ width, showColumnLayout }): props.children}
+        <LayoutContext.Provider value = {{ width, isMobile }}>
+            {typeof props.children === "function"? props.children({ width, isMobile }): props.children}
         </LayoutContext.Provider>
     )
 }

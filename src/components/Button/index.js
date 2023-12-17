@@ -27,7 +27,7 @@ export default function Button(props) {
             }}
             {...props}
             children = {props.submitting? <ActivityIndicator color = "white" size = "small" />: props.children}
-            style = {[buttonStyle, styles.baseStyle, props.style, props.disabled && { backgroundColor: "gray" }]} 
+            style = {[buttonStyle, styles.baseStyle, props.style, props.disabled && { backgroundColor: "#D3D3D3" }]} 
         />
     )
 }

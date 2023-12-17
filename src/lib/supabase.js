@@ -7,10 +7,10 @@ const supabaseUrl = SUPABASE_URL
 const supabaseAnonKey = SUPABASE_API_KEY
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
+	auth: {
+		storage: AsyncStorage,
+		autoRefreshToken: true,
+		persistSession: true,
+		detectSessionInUrl: false,
+	},
 })

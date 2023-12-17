@@ -1,6 +1,6 @@
 export default {
-    LANDING: "landing",
-    MAIN: "main",
-    LOCAL_GAME: "local-game",
-    ONLINE_GAME: "online-game"
+    LANDING: "login",
+    MAIN: "dashboard",
+    LOCAL_GAME: "game",
+    PROFILE: "profile"
 }
