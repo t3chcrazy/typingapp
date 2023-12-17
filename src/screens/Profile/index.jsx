@@ -1,10 +1,13 @@
-import Text from '../../components/Text'
+import Text from '../../restyle/components/text'
 import View from '../../restyle/components/view'
 
 export default function Profile() {
 	return (
 		<View>
-			<Text>Profile page</Text>
+			<Text variant="heading5Medium" color="primary">
+				Profile page
+			</Text>
+			<View alignItems="center" />
 		</View>
 	)
 }

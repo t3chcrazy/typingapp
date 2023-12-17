@@ -3,8 +3,10 @@ import {
 	SpacingShorthandProps,
 	BackgroundColorShorthandProps,
 	LayoutProps,
+	BorderProps,
 	layout,
 	backgroundColorShorthand,
+	border,
 	spacingShorthand,
 } from '@shopify/restyle'
 import {
@@ -16,11 +18,12 @@ import { Theme } from '../theme'
 
 type PressableProps = SpacingShorthandProps<Theme> &
 	LayoutProps<Theme> &
+	BackgroundColorShorthandProps<Theme> &
 	RNPressableProps &
-	BackgroundColorShorthandProps<Theme>
+	BorderProps<Theme>
 
 const Pressable = createRestyleComponent<PressableProps, Theme>(
-	[spacingShorthand, layout, backgroundColorShorthand],
+	[spacingShorthand, layout, backgroundColorShorthand, border],
 	RNPressable,
 )
 

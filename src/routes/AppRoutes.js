@@ -38,7 +38,7 @@ export default function AppRoutes() {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((event, session) => {
 			setIsLoggingIn(!!session?.user)
-			setSession(session.user)
+			setSession(session?.user)
 		})
 		return subscription.unsubscribe
 	}, [])

@@ -68,6 +68,13 @@ const theme = createTheme({
 		danger: palette.red,
 		textBlack: palette.black,
 	},
+	borderRadii: {
+		xs: 4,
+		sm: 8,
+		md: 12,
+		lg: 24,
+		xl: 36,
+	},
 	spacing: {
 		xs: 4,
 		sm: 8,

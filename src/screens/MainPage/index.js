@@ -1,5 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { useWindowDimensions } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import CustomDrawer from './components/CustomDrawer'
 import CustomHeader from './components/CustomHeader'
@@ -23,6 +24,7 @@ const SCREENS = [
 		name: routes.LOCAL_GAME,
 		options: {
 			title: 'Play game!',
+			unmountOnBlur: true,
 		},
 	},
 	{
@@ -36,10 +38,14 @@ const SCREENS = [
 
 export default function MainPage() {
 	const { width } = useWindowDimensions()
+	const { top } = useSafeAreaInsets()
 	return (
 		<Drawer.Navigator
 			drawerContent={(props) => <CustomDrawer {...props} />}
 			screenOptions={{
+				sceneContainerStyle: {
+					paddingTop: top,
+				},
 				drawerType: width >= 768 ? 'permanent' : 'front',
 				freezeOnBlur: true,
 				header: (props) => <CustomHeader {...props} />,

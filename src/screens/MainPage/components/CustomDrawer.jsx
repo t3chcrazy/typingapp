@@ -68,9 +68,11 @@ function DrawerButton({
 	}, [text, isSelected])
 	return (
 		<Pressable
+			borderRadius="sm"
 			bg={isSelected ? selectedBg : 'white'}
 			px="sm"
 			py="sm"
+			my="xs"
 			onPress={onPress}
 			flexDirection="row"
 			alignItems="center"
