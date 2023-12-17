@@ -1,18 +1,26 @@
 import {
 	createRestyleComponent,
-	SpacingProps,
+	SpacingShorthandProps,
+	BackgroundColorShorthandProps,
 	LayoutProps,
 	layout,
-	spacing,
+	backgroundColorShorthand,
+	spacingShorthand,
 } from '@shopify/restyle'
-import { Pressable as RNPressable } from 'react-native'
+import {
+	Pressable as RNPressable,
+	PressableProps as RNPressableProps,
+} from 'react-native'
 
 import { Theme } from '../theme'
 
-type PressableProps = SpacingProps<Theme> & LayoutProps<Theme>
+type PressableProps = SpacingShorthandProps<Theme> &
+	LayoutProps<Theme> &
+	RNPressableProps &
+	BackgroundColorShorthandProps<Theme>
 
 const Pressable = createRestyleComponent<PressableProps, Theme>(
-	[spacing, layout],
+	[spacingShorthand, layout, backgroundColorShorthand],
 	RNPressable,
 )
 

@@ -48,12 +48,14 @@ const TEXT_VARIANTS = FONT_SIZES.reduce((acc, fontSize) => {
 	return acc
 }, {})
 
-const palette = {
+export const palette = {
 	white: '#fff',
-	blue: '#00B4DB',
-	darkBlue: '#0083B0',
+	blue: '#00bfdb',
+	darkBlue: '#0083b0',
 	yellow: '#f6e58d',
-	lightGray: '#F6F6F6',
+	lightGray: '#f6f6f6',
+	red: '#e74c3c',
+	black: '#2f3640',
 }
 
 const theme = createTheme({
@@ -63,6 +65,8 @@ const theme = createTheme({
 		primary: palette.darkBlue,
 		white: palette.white,
 		warning: palette.yellow,
+		danger: palette.red,
+		textBlack: palette.black,
 	},
 	spacing: {
 		xs: 4,

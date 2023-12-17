@@ -1,8 +1,9 @@
-import { useContext } from "react";
-import { UserSession } from ".";
+import { useContext } from 'react'
+
+import { UserSession } from '.'
 
 export function useSessionData() {
-    const { session } = useContext(UserSession)
+	const { session } = useContext(UserSession)
 
-    return session
+	return session
 }
