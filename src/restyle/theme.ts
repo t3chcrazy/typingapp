@@ -74,6 +74,7 @@ const theme = createTheme({
 		md: 12,
 		lg: 24,
 		xl: 36,
+		circle: 200,
 	},
 	spacing: {
 		xs: 4,
@@ -82,6 +83,11 @@ const theme = createTheme({
 		lg: 24,
 		xl: 36,
 		xxl: 64,
+	},
+	breakpoints: {
+		phone: 0,
+		tablet: 768,
+		pc: 1024,
 	},
 	textVariants: {
 		header: {

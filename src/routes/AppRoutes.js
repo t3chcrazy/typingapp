@@ -50,7 +50,8 @@ export default function AppRoutes() {
 	return (
 		<UserSession.Provider value={{ session }}>
 			<Stack.Navigator
-				screenOptions={{ header: () => null, title: 'Butterfingers' }}>
+				screenOptions={{ header: () => null, title: 'Butterfingers' }}
+			>
 				{isLoggingIn ? (
 					<Stack.Screen name="main" getComponent={() => MainPage} />
 				) : (

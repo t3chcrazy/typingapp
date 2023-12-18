@@ -49,7 +49,8 @@ export default function MainPage() {
 				drawerType: width >= 768 ? 'permanent' : 'front',
 				freezeOnBlur: true,
 				header: (props) => <CustomHeader {...props} />,
-			}}>
+			}}
+		>
 			{SCREENS.map(({ name, options, component }) => (
 				<Drawer.Screen
 					key={name}

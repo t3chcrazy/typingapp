@@ -13,6 +13,7 @@
     "@babel/plugin-syntax-jsx": "^7.21.4",
     "@expo-google-fonts/lato": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",
+    "@hookform/resolvers": "^3.3.2",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
     "@react-navigation/drawer": "^6.6.6",
@@ -31,6 +32,7 @@
     "random-words": "^2.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.49.2",
     "react-native": "0.72.6",
     "react-native-flash-message": "^0.4.1",
     "react-native-gesture-handler": "~2.12.0",
@@ -42,7 +44,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
     "typescript": "^5.1.3",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "yup": "^1.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

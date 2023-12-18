@@ -92,7 +92,8 @@ export default function App() {
 						)}
 						<NavigationContainer
 							linking={linking}
-							fallback={<MainPlaceholder />}>
+							fallback={<MainPlaceholder />}
+						>
 							<AppRoutes />
 						</NavigationContainer>
 						<FlashMessage position="top" />

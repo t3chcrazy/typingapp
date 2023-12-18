@@ -1,10 +1,12 @@
-import { Pressable, ActivityIndicator } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import Animated, {
 	useSharedValue,
 	useAnimatedStyle,
 	withSpring,
 } from 'react-native-reanimated'
 import { ScaledSheet } from 'react-native-size-matters'
+
+import Pressable from '../../restyle/components/pressable'
 
 const AnimatedButton = Animated.createAnimatedComponent(Pressable)
 
