@@ -43,6 +43,7 @@ export default function MainPage() {
 		<Drawer.Navigator
 			drawerContent={(props) => <CustomDrawer {...props} />}
 			screenOptions={{
+				lazy: true,
 				sceneContainerStyle: {
 					paddingTop: top,
 				},

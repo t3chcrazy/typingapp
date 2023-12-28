@@ -1,26 +1,28 @@
-import { FontAwesome5 } from '@expo/vector-icons'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Buffer } from 'buffer'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useWindowDimensions } from 'react-native'
+import { Platform } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 
+import ProfileImage from './components/ProfileImage'
 import { ProfileSchema } from './schema'
 import Button from '../../components/Button'
 import DrawerScreen from '../../components/DrawerScreen'
 import FormField from '../../components/FormField'
 import { useSessionData } from '../../context/hooks'
 import { supabase } from '../../lib/supabase'
-import Pressable from '../../restyle/components/pressable'
 import Text from '../../restyle/components/text'
 import View from '../../restyle/components/view'
 
-const PROFILE_SIZE = { phone: 60, tablet: 80, pc: 120 }
+const prepareBase64DataUrl = (base64) =>
+	base64
+		.replace('data:image/png;', 'data:image/png;charset=utf-8;')
+		.replace(/^.+,/, '')
 
 export default function Profile() {
 	const [editing, setEditing] = useState(false)
-	const data = useSessionData()
-	const { width } = useWindowDimensions()
+	const { savedProfileImage, ...data } = useSessionData()
 	const {
 		control,
 		handleSubmit,
@@ -42,20 +44,43 @@ export default function Profile() {
 
 	const handleButtonClick = async ({ alias, email, profileImage }) => {
 		if (editing) {
-			await supabase.auth.updateUser({
-				data: {
-					userName: alias,
-				},
-				email,
-			})
-			toggleEdit()
-			showMessage({
-				message: 'Profile updated successfully!',
-				type: 'success',
-			})
+			try {
+				if (profileImage) {
+					await supabase.storage.from('avatars').upload(
+						`${data.id}/profile-image.png`,
+						Platform.select({
+							web: Buffer.from(
+								prepareBase64DataUrl(profileImage.uri),
+								'base64',
+							),
+							native: profileImage,
+						}),
+						{
+							contentType: 'image/png',
+							upsert: true,
+						},
+					)
+				}
+				await supabase.auth.updateUser({
+					data: {
+						userName: alias,
+						profileImage: `${data.id}/profile-image.png`,
+					},
+					email,
+				})
+				toggleEdit()
+				showMessage({
+					message: 'Profile updated successfully!',
+					type: 'success',
+				})
+			} catch {}
 		} else {
 			toggleEdit()
 		}
+	}
+
+	const handleImagePick = async (imageAsset) => {
+		setValue('profileImage', imageAsset)
 	}
 
 	return (
@@ -70,26 +95,15 @@ export default function Profile() {
 				borderRadius="lg"
 				p="lg"
 				alignSelf="center"
-				minWidth={{ phone: '90%', tablet: '80%', pc: 600 }}
+				minWidth={{ phone: '95%', tablet: '85%', pc: '70%' }}
 			>
+				<ProfileImage
+					editing={editing}
+					savedProfileImage={savedProfileImage}
+					handleImageSelect={handleImagePick}
+				/>
 				{editing ? (
 					<>
-						<Pressable
-							borderWidth={2}
-							borderColor="primary"
-							borderRadius="circle"
-							width={PROFILE_SIZE}
-							height={PROFILE_SIZE}
-							justifyContent="center"
-							alignItems="center"
-							bg="secondaryBackground"
-						>
-							<FontAwesome5
-								name="user"
-								size={width < 768 ? 35 : 60}
-								color="black"
-							/>
-						</Pressable>
 						<FormField
 							width="80%"
 							placeholder="Alias"
@@ -105,22 +119,6 @@ export default function Profile() {
 					</>
 				) : (
 					<>
-						<View
-							borderWidth={2}
-							borderColor="primary"
-							borderRadius="circle"
-							width={PROFILE_SIZE}
-							height={PROFILE_SIZE}
-							justifyContent="center"
-							alignItems="center"
-							bg="secondaryBackground"
-						>
-							<FontAwesome5
-								name="user"
-								size={width < 768 ? 35 : 60}
-								color="black"
-							/>
-						</View>
 						<Text variant="heading5Medium" color="textBlack">
 							{data?.user_metadata?.userName}
 						</Text>

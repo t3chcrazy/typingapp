@@ -10,9 +10,9 @@ import reducer, { INITIAL_STATE } from './forms/reducer'
 import { isFormValid } from './forms/validator'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
-import Text from '../../components/Text'
 import { supabase } from '../../lib/supabase'
 import Toggle from '../../renderprops/Toggle'
+import Text from '../../restyle/components/text'
 
 const { width } = Dimensions.get('window')
 
@@ -73,14 +73,19 @@ export default function Landing() {
 		<ScrollView
 			style={styles.scrollContent}
 			contentContainerStyle={styles.root}
-			keyboardShouldPersistTaps="always">
+			keyboardShouldPersistTaps="always"
+		>
 			<Header />
 			<View style={styles.formContainer}>
 				<View style={styles.formHeader}>
 					{isLoggingIn ? (
 						<View>
 							<Text style={styles.formTitle}>Login</Text>
-							<Text style={styles.formHeaderInfo}>
+							<Text
+								textAlign="center"
+								variant="heading5Medium"
+								mb="md"
+							>
 								Enter your details to signin to your account
 							</Text>
 						</View>
@@ -158,18 +163,20 @@ export default function Landing() {
 					submitting={submitting}
 					disabled={submitting}
 					onPress={handleSubmit}
-					style={styles.actionButton}>
+					style={styles.actionButton}
+				>
 					<Text style={styles.actionButtonText}>
 						{isLoggingIn ? 'Login' : 'Sign Up'}
 					</Text>
 				</Button>
-				<Text style={styles.formFooterText}>
+				<Text variant="paragraphRegular">
 					{isLoggingIn
 						? "Don't have an account?"
 						: 'Already have an account?'}{' '}
 					<Text
 						style={styles.modeToggleButton}
-						onPress={toggleStatus}>
+						onPress={toggleStatus}
+					>
 						{isLoggingIn ? 'Sign up' : 'Sign In'}
 					</Text>
 				</Text>

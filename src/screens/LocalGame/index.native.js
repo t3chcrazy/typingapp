@@ -52,7 +52,7 @@ export default function LocalGame() {
 		},
 	})
 	const { timer, startTimer, isRunning, stopTimer } = useTimer(
-		10,
+		60,
 		1000,
 		() => {
 			mutate({
@@ -165,15 +165,18 @@ export default function LocalGame() {
 					showsVerticalScrollIndicator={false}
 					pointerEvents="none"
 					ref={scrollContainer}
-					style={styles.scrollViewStyle}>
+					style={styles.scrollViewStyle}
+				>
 					<View
 						ref={viewRef}
-						style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+						style={{ flexDirection: 'row', flexWrap: 'wrap' }}
+					>
 						{texts.map((t, ind) => (
 							<Text
 								ref={(ref) => (t.ref = ref)}
 								key={`${t.value}-${ind}`}
-								style={styles.individualWord}>
+								style={styles.individualWord}
+							>
 								{t.value}
 							</Text>
 						))}
@@ -197,7 +200,8 @@ export default function LocalGame() {
 					</View>
 					<Pressable
 						onPress={handleRetryGame}
-						style={styles.retryButton}>
+						style={styles.retryButton}
+					>
 						<FontAwesome name="refresh" size={24} color="black" />
 					</Pressable>
 				</View>
