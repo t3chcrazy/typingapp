@@ -13,9 +13,15 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default function FormField({ name, control, inputStyle, ...props }) {
+export default function FormField({
+	name,
+	control,
+	inputStyle,
+	inputProps,
+	...props
+}) {
 	const {
-		field: { value, ...fieldProps },
+		field: { value, onChange, ...fieldProps },
 		fieldState: { error },
 	} = useController({ name, control })
 	return (
@@ -33,7 +39,9 @@ export default function FormField({ name, control, inputStyle, ...props }) {
 				value={value}
 				{...fieldProps}
 				style={[styles.field, inputStyle]}
+				{...inputProps}
 				placeholderTextColor="#bdc3c7"
+				onChangeText={onChange}
 			/>
 			{!!error && (
 				<Text color="danger" variant="tinyRegular" mt="sm">

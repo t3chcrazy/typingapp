@@ -12,11 +12,13 @@ import Button from '../../components/Button'
 import Input from '../../components/Input'
 import { supabase } from '../../lib/supabase'
 import Toggle from '../../renderprops/Toggle'
+import Pressable from '../../restyle/components/pressable'
 import Text from '../../restyle/components/text'
+import routes from '../../routes/routes'
 
 const { width } = Dimensions.get('window')
 
-export default function Landing() {
+export default function Landing({ navigation }) {
 	const [isLoggingIn, setIsLogginIn] = useState(true)
 	const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 	const [submitting, setSubmitting] = useState(false)
@@ -67,6 +69,10 @@ export default function Landing() {
 		} finally {
 			setSubmitting(false)
 		}
+	}
+
+	const handleForgotPassword = () => {
+		navigation.navigate(routes.REQUEST_RESET)
 	}
 
 	return (
@@ -180,6 +186,9 @@ export default function Landing() {
 						{isLoggingIn ? 'Sign up' : 'Sign In'}
 					</Text>
 				</Text>
+				<Pressable onPress={handleForgotPassword}>
+					<Text>Reset password</Text>
+				</Pressable>
 			</View>
 		</ScrollView>
 	)

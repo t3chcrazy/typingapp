@@ -7,6 +7,8 @@ import { supabase } from '../lib/supabase'
 import MainPlaceholder from '../loaders/MainPlaceholder'
 import Landing from '../screens/Landing'
 import MainPage from '../screens/MainPage'
+import RequestPasswordChange from '../screens/RequestPasswordChange'
+import ResetPassword from '../screens/ResetPassword'
 
 const Stack = createNativeStackNavigator()
 
@@ -37,6 +39,7 @@ export default function AppRoutes() {
 		const {
 			data: { subscription },
 		} = supabase.auth.onAuthStateChange((event, session) => {
+			console.log({ session, event })
 			setIsLoggingIn(!!session?.user)
 			setSession(session?.user)
 		})
@@ -60,8 +63,16 @@ export default function AppRoutes() {
 							name={routes.LANDING}
 							getComponent={() => Landing}
 						/>
+						<Stack.Screen
+							name={routes.REQUEST_RESET}
+							getComponent={() => RequestPasswordChange}
+						/>
 					</>
 				)}
+				<Stack.Screen
+					name={routes.RESET_PASSWORD}
+					getComponent={() => ResetPassword}
+				/>
 			</Stack.Navigator>
 		</UserSession.Provider>
 	)

@@ -27,6 +27,8 @@ import routes from './src/routes/routes'
 
 enableExperimentalWebImplementation(true)
 
+global.Buffer = global.Buffer || require('buffer').Buffer
+
 onlineManager.setEventListener((setOnline) => {
 	return NetInfo.addEventListener((state) => {
 		if (!state.isConnected) {
@@ -49,6 +51,8 @@ const linking = {
 	config: {
 		screens: {
 			[routes.LANDING]: '/login',
+			[routes.REQUEST_RESET]: '/request-reset',
+			[routes.RESET_PASSWORD]: '/reset-password',
 			main: {
 				screens: {
 					[routes.MAIN]: '/dashboard',

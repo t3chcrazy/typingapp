@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ActivityIndicator } from 'react-native'
 import Animated, {
 	useSharedValue,
@@ -20,20 +21,27 @@ export default function Button(props) {
 		[],
 	)
 
+	const handlers = useMemo(
+		() => ({
+			onHoverIn: () => {
+				scale.value = withSpring(0.95)
+			},
+			onPressIn: () => {
+				scale.value = withSpring(0.9)
+			},
+			onPressOut: () => {
+				scale.value = withSpring(1)
+			},
+			onHoverOut: () => {
+				scale.value = withSpring(1)
+			},
+		}),
+		[],
+	)
+
 	return (
 		<AnimatedButton
-			onHoverIn={(e) => {
-				scale.value = withSpring(0.95)
-			}}
-			onPressIn={(e) => {
-				scale.value = withSpring(0.9)
-			}}
-			onPressOut={(e) => {
-				scale.value = withSpring(1)
-			}}
-			onHoverOut={(e) => {
-				scale.value = withSpring(1)
-			}}
+			{...handlers}
 			{...props}
 			children={
 				props.submitting ? (
