@@ -1,9 +1,13 @@
 import { useRef, useEffect, useState } from 'react'
 
-export default function useTimer(limit, interval = 1000, finishCallback) {
+export default function useTimer(
+	limit: number,
+	interval: number = 1000,
+	finishCallback: () => void | undefined,
+) {
 	const [timer, setTimer] = useState(limit)
 	const [isRunning, setRunning] = useState(false)
-	const intervalRef = useRef()
+	const intervalRef = useRef<NodeJS.Timeout>()
 
 	useEffect(() => {
 		return stopTimer

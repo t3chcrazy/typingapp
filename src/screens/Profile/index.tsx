@@ -106,13 +106,17 @@ export default function Profile() {
 					<>
 						<FormField
 							width="80%"
-							placeholder="Alias"
+							inputProps={{
+								placeholder: 'Alias',
+							}}
 							name="alias"
 							control={control}
 						/>
 						<FormField
 							width="80%"
-							placeholder="Email"
+							inputProps={{
+								placeholder: 'Email',
+							}}
 							name="email"
 							control={control}
 						/>

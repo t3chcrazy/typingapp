@@ -2,12 +2,11 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { DrawerContentScrollView } from '@react-navigation/drawer'
 import { useMemo } from 'react'
 import { StyleSheet } from 'react-native'
-
-import { supabase } from '../../../lib/supabase'
-import Pressable from '../../../restyle/components/pressable'
-import Text from '../../../restyle/components/text'
-import { palette } from '../../../restyle/theme'
-import routes from '../../../routes/routes'
+import { supabase } from 'src/lib/supabase'
+import Pressable from 'src/restyle/components/pressable'
+import Text from 'src/restyle/components/text'
+import { ColorVariants, palette } from 'src/restyle/theme'
+import routes from 'src/routes/routes'
 
 const styles = StyleSheet.create({
 	content: {
@@ -22,6 +21,15 @@ const BUTTON_TEXTS = {
 	LOGOUT: 'Logout',
 }
 
+type ButtonProps = {
+	isSelected: boolean
+	text: string
+	selectedBg?: ColorVariants
+	selectedTextColor?: ColorVariants
+	selectedIconColor?: string
+	onPress: (...props: any[]) => any
+}
+
 function DrawerButton({
 	isSelected,
 	text,
@@ -29,7 +37,7 @@ function DrawerButton({
 	selectedTextColor = 'primary',
 	selectedIconColor = palette.darkBlue,
 	onPress,
-}) {
+}: ButtonProps) {
 	const icon = useMemo(() => {
 		switch (text) {
 			case BUTTON_TEXTS.DASHBOARD:
@@ -76,11 +84,13 @@ function DrawerButton({
 			onPress={onPress}
 			flexDirection="row"
 			alignItems="center"
-			cg="md">
+			cg="md"
+		>
 			{icon}
 			<Text
 				color={isSelected ? selectedTextColor : 'textBlack'}
-				variant="heading6Regular">
+				variant="heading6Regular"
+			>
 				{text}
 			</Text>
 		</Pressable>

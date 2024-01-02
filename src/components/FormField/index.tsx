@@ -1,9 +1,10 @@
+import { LayoutProps, SpacingShorthandProps } from '@shopify/restyle'
 import { useController } from 'react-hook-form'
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native'
+import { Theme, palette } from 'src/restyle/theme'
 
 import Text from '../../restyle/components/text'
 import View from '../../restyle/components/view'
-import { palette } from '../../restyle/theme'
 
 const styles = StyleSheet.create({
 	field: {
@@ -13,13 +14,21 @@ const styles = StyleSheet.create({
 	},
 })
 
+type FieldProps = {
+	name: string
+	control: any
+	inputStyle?: TextStyle
+	inputProps?: TextInputProps
+} & LayoutProps<Theme> &
+	SpacingShorthandProps<Theme>
+
 export default function FormField({
 	name,
 	control,
 	inputStyle,
 	inputProps,
 	...props
-}) {
+}: FieldProps) {
 	const {
 		field: { value, onChange, ...fieldProps },
 		fieldState: { error },

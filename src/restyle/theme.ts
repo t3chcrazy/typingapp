@@ -1,5 +1,7 @@
 import { createTheme } from '@shopify/restyle'
 
+import { TYPOGRAPHY } from './types'
+
 const FONT_SIZES = [
 	{
 		label: 'tiny',
@@ -46,7 +48,7 @@ const TEXT_VARIANTS = FONT_SIZES.reduce((acc, fontSize) => {
 		}
 	})
 	return acc
-}, {})
+}, {}) as TYPOGRAPHY
 
 export const palette = {
 	white: '#fff',
@@ -106,4 +108,7 @@ const theme = createTheme({
 })
 
 export type Theme = typeof theme
+
+export type ColorVariants = keyof typeof theme.colors
+
 export default theme

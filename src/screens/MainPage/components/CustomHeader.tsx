@@ -1,7 +1,6 @@
 import { Feather } from '@expo/vector-icons'
-
-import Layout from '../../../renderprops/Layout'
-import View from '../../../restyle/components/view'
+import Layout from 'src/renderprops/Layout'
+import View from 'src/restyle/components/view'
 
 export default function CustomHeader({ navigation }) {
 	const handleMenuClick = () => navigation.openDrawer()

@@ -67,7 +67,6 @@ export default function ResetPassword({ access_token, route, navigation }) {
 					}}
 				/>
 				<FormField
-					placeholder="Confirm password"
 					name="confirmPassword"
 					control={control}
 					inputProps={{

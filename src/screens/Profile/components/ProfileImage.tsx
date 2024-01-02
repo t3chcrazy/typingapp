@@ -7,9 +7,8 @@ import {
 } from 'expo-image-picker'
 import { useState } from 'react'
 import { StyleSheet, useWindowDimensions } from 'react-native'
-
-import Pressable from '../../../restyle/components/pressable'
-import View from '../../../restyle/components/view'
+import Pressable from 'src/restyle/components/pressable'
+import View from 'src/restyle/components/view'
 
 const PROFILE_SIZE = { phone: 80, tablet: 90, pc: 120 }
 
@@ -31,7 +30,9 @@ export default function ProfileImage({
 	savedProfileImage,
 	handleImageSelect,
 }) {
-	const [tempProfilePicture, setTempProfilePicture] = useState({})
+	const [tempProfilePicture, setTempProfilePicture] = useState<{
+		uri?: string
+	}>({})
 	const [libraryStatus, requestLibraryPermission] =
 		useMediaLibraryPermissions()
 	const { width } = useWindowDimensions()

@@ -2,18 +2,20 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { ScrollView, StyleSheet } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Button from 'src/components/Button'
+import FormField from 'src/components/FormField'
+import Text from 'src/restyle/components/text'
+import View from 'src/restyle/components/view'
 
 import { RequestPasswordSchema } from './schema'
-import Button from '../../components/Button'
-import FormField from '../../components/FormField'
 import { supabase } from '../../lib/supabase'
-import Text from '../../restyle/components/text'
 
 const styles = StyleSheet.create({
 	root: {
-		flex: 1,
+		flexGrow: 1,
+		justifyContent: 'center',
 	},
+	scrollContent: { backgroundColor: '#f6e58d' },
 })
 
 export default function RequestPasswordChange() {
@@ -30,7 +32,11 @@ export default function RequestPasswordChange() {
 
 	const handleSendResetLink = async ({ resetEmail }) => {
 		try {
-			await supabase.auth.resetPasswordForEmail(resetEmail)
+			const { error } =
+				await supabase.auth.resetPasswordForEmail(resetEmail)
+			if (!error?.message) {
+				throw error.message
+			}
 			showMessage({
 				message: 'Password reset link sent successfully!',
 			})
@@ -40,8 +46,19 @@ export default function RequestPasswordChange() {
 	}
 
 	return (
-		<SafeAreaView style={styles.root}>
-			<ScrollView contentContainerStyle={styles.root}>
+		<ScrollView
+			keyboardShouldPersistTaps="always"
+			style={styles.scrollContent}
+			contentContainerStyle={styles.root}
+		>
+			<View
+				bg="white"
+				p="lg"
+				borderRadius="md"
+				alignSelf="center"
+				width={{ phone: '90%', tablet: 500 }}
+				rg="sm"
+			>
 				<Text variant="heading5Medium">Forgot password?</Text>
 				<Text variant="paragraphRegular">
 					No worries! Submit your email and we will send you a reset
@@ -52,8 +69,9 @@ export default function RequestPasswordChange() {
 					control={control}
 					inputProps={{
 						placeholder: 'Enter email',
+						autoCapitalize: 'none',
 					}}
-					autocapitalize="none"
+					my="md"
 				/>
 				<Button
 					disabled={isSubmitting}
@@ -61,7 +79,7 @@ export default function RequestPasswordChange() {
 				>
 					<Text>Submit</Text>
 				</Button>
-			</ScrollView>
-		</SafeAreaView>
+			</View>
+		</ScrollView>
 	)
 }

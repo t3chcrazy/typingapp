@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import routes from './routes'
 import { UserSession } from '../context'
+import { useResetListener } from '../hooks/useResetListener'
 import { supabase } from '../lib/supabase'
 import MainPlaceholder from '../loaders/MainPlaceholder'
 import Landing from '../screens/Landing'
@@ -16,6 +17,7 @@ export default function AppRoutes() {
 	const [isLoggingIn, setIsLoggingIn] = useState(false)
 	const [loading, setLoading] = useState(true)
 	const [session, setSession] = useState({})
+	useResetListener()
 
 	useEffect(() => {
 		const initialSetup = async () => {
@@ -51,7 +53,7 @@ export default function AppRoutes() {
 	}
 
 	return (
-		<UserSession.Provider value={{ session }}>
+		<UserSession.Provider value={{ session, setSession }}>
 			<Stack.Navigator
 				screenOptions={{ header: () => null, title: 'Butterfingers' }}
 			>
