@@ -186,9 +186,6 @@ export default function Landing({ navigation }) {
 						{isLoggingIn ? 'Sign up' : 'Sign In'}
 					</Text>
 				</Text>
-				<Pressable onPress={handleForgotPassword}>
-					<Text>Reset password</Text>
-				</Pressable>
 			</View>
 		</ScrollView>
 	)

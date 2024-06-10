@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useEffect, useState } from 'react'
 
 import routes from './routes'
-import { UserSession } from '../context'
+import { UserSession } from '../context/provider'
 import { useResetListener } from '../hooks/useResetListener'
 import { supabase } from '../lib/supabase'
 import MainPlaceholder from '../loaders/MainPlaceholder'

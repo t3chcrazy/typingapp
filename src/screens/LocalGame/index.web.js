@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
-import { Pressable, ScrollView, View, Platform, Text } from 'react-native'
+import { Pressable, ScrollView, View, Platform } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import Animated, {
 	useSharedValue,
@@ -17,6 +17,7 @@ import Button from '../../components/Button'
 import Input from '../../components/Input'
 import useTimer from '../../hooks/useTimer'
 import { saveRunToDB } from '../../lib/db'
+import Text from '../../restyle/components/text'
 
 const INITIAL_STATE = {
 	wpm: 0,
@@ -152,10 +153,12 @@ export default function LocalGame() {
 					scrollEnabled={false}
 					showsVerticalScrollIndicator={false}
 					ref={scrollContainer}
-					style={styles.scrollViewStyle}>
+					style={styles.scrollViewStyle}
+				>
 					<View
 						ref={viewRef}
-						style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+						style={{ flexDirection: 'row', flexWrap: 'wrap' }}
+					>
 						{texts.map((t, ind) => (
 							<Text
 								ref={(ref) => (t.ref = ref)}
@@ -166,7 +169,8 @@ export default function LocalGame() {
 										currentWordIndex === ind
 											? 'gray'
 											: 'transparent',
-								}}>
+								}}
+							>
 								{t.value}
 							</Text>
 						))}
@@ -190,27 +194,32 @@ export default function LocalGame() {
 					</View>
 					<Pressable
 						onPress={handleRetryGame}
-						style={styles.retryButton}>
+						style={styles.retryButton}
+					>
 						<FontAwesome name="refresh" size={24} color="black" />
 					</Pressable>
 				</View>
 			</Animated.View>
 			<Animated.View style={[styles.mainContainer, infoContainer]}>
-				<Text>Here are the results</Text>
-				<Text>
+				<Text variant="paragraphMedium" mb="md">
+					Here are the results
+				</Text>
+				<Text variant="smallRegular">
 					WPM:{' '}
 					{localGameData.current.correct_words +
 						localGameData.current.wrong_words}
 				</Text>
-				<Text>
+				<Text variant="smallRegular">
 					Correct Words: {localGameData.current.correct_words}
 				</Text>
-				<Text>Wrong Words: {localGameData.current.wrong_words}</Text>
-				<Text>
+				<Text variant="smallRegular">
+					Wrong Words: {localGameData.current.wrong_words}
+				</Text>
+				<Text variant="smallRegular">
 					Correct Keystrokes:{' '}
 					{localGameData.current.correct_keysrokes}
 				</Text>
-				<Text>
+				<Text variant="smallRegular">
 					Wrong Keystrokes: {localGameData.current.wrong_keystrokes}
 				</Text>
 				<Button disabled={isRecordSaving} onPress={handleRestartGame}>

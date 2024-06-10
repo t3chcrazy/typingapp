@@ -40,14 +40,6 @@ function DrawerButton({
 }: ButtonProps) {
 	const icon = useMemo(() => {
 		switch (text) {
-			case BUTTON_TEXTS.DASHBOARD:
-				return (
-					<AntDesign
-						name="dashboard"
-						size={24}
-						color={isSelected ? selectedIconColor : palette.black}
-					/>
-				)
 			case BUTTON_TEXTS.PLAY_GAME:
 				return (
 					<MaterialIcons
@@ -111,19 +103,14 @@ export default function CustomDrawer({ navigation, ...props }) {
 				Butterfingers
 			</Text>
 			<DrawerButton
-				text={BUTTON_TEXTS.DASHBOARD}
-				onPress={handleNavigate(routes.MAIN)}
-				isSelected={selectedIndex === 0}
-			/>
-			<DrawerButton
 				text={BUTTON_TEXTS.PLAY_GAME}
 				onPress={handleNavigate(routes.LOCAL_GAME)}
-				isSelected={selectedIndex === 1}
+				isSelected={selectedIndex === 0}
 			/>
 			<DrawerButton
 				text={BUTTON_TEXTS.PROFILE}
 				onPress={handleNavigate(routes.PROFILE)}
-				isSelected={selectedIndex === 2}
+				isSelected={selectedIndex === 1}
 			/>
 			<DrawerButton
 				isSelected

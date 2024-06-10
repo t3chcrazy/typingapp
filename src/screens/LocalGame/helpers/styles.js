@@ -21,6 +21,7 @@ const styles = ScaledSheet.create({
 		alignSelf: 'center',
 		position: 'absolute',
 		top: '20@vs',
+		columnGap: 6,
 	},
 	textHeader: {
 		fontSize: Platform.select({

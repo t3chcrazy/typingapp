@@ -13,13 +13,6 @@ const Drawer = createDrawerNavigator()
 
 const SCREENS = [
 	{
-		component: Dashboard,
-		name: routes.MAIN,
-		options: {
-			title: 'Dashboard',
-		},
-	},
-	{
 		component: LocalGame,
 		name: routes.LOCAL_GAME,
 		options: {

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
 
-import { UserSession } from '.'
+import { UserSession } from './provider'
 import { supabase } from '../lib/supabase'
 
 export function useSessionData() {
-	const { session } = useContext(UserSession)
+	const { session } = useContext(UserSession) ?? {}
 	const [savedProfileImage, setSavedProfileImage] = useState('')
 
 	useEffect(() => {
